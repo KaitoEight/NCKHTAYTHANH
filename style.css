@@ -1,0 +1,86 @@
+* {
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+}
+
+.prompt {
+	display: block;
+	font-size: 20px;
+}
+
+.btn {
+	margin: 0 20px 0 20px;
+}
+
+.btn-strongly-agree {
+	color: #89d298;
+	font-weight: bold;
+}
+
+.btn-strongly-agree.active,
+.btn-strongly-agree:active,
+.btn-strongly-agree:focus,
+.btn-strongly-agree:active:focus,
+.btn-strongly-agree.active:focus,
+.btn-strongly-agree:hover
+ {
+	background-color: #89d298;
+}
+
+.btn-agree {
+	color: #89d298;
+}
+
+.btn-agree.active,
+.btn-agree:active,
+.btn-agree:focus,
+.btn-agree:active:focus,
+.btn-agree.active:focus,
+.btn-agree:hover {
+	background-color: rgba(137, 210, 152, 0.5);
+}
+
+.btn-disagree {
+	color: #e28181;
+}
+
+.btn-disagree.active,
+.btn-disagree:active,
+.btn-disagree:focus,
+.btn-disagree:active:focus,
+.btn-disagree.active:focus,
+.btn-disagree:hover {
+	background-color: rgba(226, 129, 129, 0.5);
+}
+
+.btn-strongly-disagree {
+	color: #e28181;
+	font-weight: bold;
+}
+
+.btn-strongly-disagree.active,
+.btn-strongly-disagree:active,
+.btn-strongly-disagree:focus,
+.btn-strongly-disagree:active:focus,
+.btn-strongly-disagree.active:focus,
+.btn-strongly-disagree:hover {
+	background-color: #e28181;
+}
+
+.bottom {
+	margin-bottom: 100px;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
+/* RESULTS */
+.results {
+	margin-bottom: 40px;
+	margin-top: 40px;
+}

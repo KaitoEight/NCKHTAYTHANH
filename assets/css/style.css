@@ -1,0 +1,107 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+.yesno
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.yesno a
+{
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    border: 2px solid #25d0ee;
+    margin: 40px;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 2px;
+    color: #fff;
+    -webkit-box-reflect: below -5px linear-gradient(transparent,#002);
+    transition: 0.5s;
+    transition-delay: 0ius;
+
+}
+
+.yesno a:hover
+{
+    transition-delay: 1.5s;
+    color:#000;
+    box-shadow: 0 0 10px #25d0ee,
+                0 0 20px #25d0ee
+                0 0 40px #25d0ee
+                0 0 80px #25d0ee
+                0 0 160px #25d0ee
+
+
+}
+.yesno a span{
+    position: relative;
+    z-index: 100;
+}
+.yesno a:nth-child(2)
+{
+    filter: hue-rotate(80deg);
+}
+.yesno a::before
+{
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 2px;
+    background: #25d0ee;
+    box-shadow: 5px -8px 0 #25d0ee,
+                5px 8px 0 #25d0ee;
+    transition: width 0.5s , left 0.5s , height 0.5s,
+    box-shadow 0.5s ;  
+    transition-delay: 1s,0.5s,0s,0s;   
+}
+.yesno a:hover::before
+{
+    width: 60%;
+    height: 100%;
+    left: -2px;
+    box-shadow: 5px 0 0 #25d0ee,
+                5px 0 0 #25d0ee;
+    transition-delay: 0s,0.5s,1s,1s;  
+
+}
+
+
+.yesno a::after
+{
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 2px;
+    background: #25d0ee;
+    box-shadow: -5px -8px 0 #25d0ee,
+                -5px 8px 0 #25d0ee;
+    transition: width 0.5s , left 0.5s , height 0.5s,
+    box-shadow 0.5s ;  
+    transition-delay: 1s,0.5s,0s,0s;   
+}
+.yesno a:hover::after
+{
+    width: 60%;
+    height: 100%;
+    right: -2px;
+    box-shadow: -5px 0 0 #25d0ee,
+                -5px 0 0 #25d0ee;
+    transition-delay: 0s,0.5s,1s,1s;  
+
+}

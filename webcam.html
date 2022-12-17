@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhận diện cảm xúc</title>
+     <style>
+      .container{ width: 600px; float: left;}
+      .title{ font-size: 12pt; font-weight: bold;}
+        #analysis{
+            width: 400px;
+            min-height: 240px;
+            border: 1px solid #008000;            
+        }
+        #camara{
+            width: 320px;
+            min-height: 240px;
+            border: 1px solid #008000;
+            align-items: right;
+        }
+        #start_over {
+            position: absolute;
+            background-color: #7C0098;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        #start_over span {
+            position: absolute;
+            font-size: 30px;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            color: white;
+            display: block;
+            height: 20px;
+            margin: auto;
+            text-align: center;
+        }
+
+        #myProgress {
+            width: 86%;
+            background-color: rgb(189, 185, 185);
+        }
+
+        #myBar {
+            width: 1%;
+            height: 30px;
+            background-color: #D60088;
+        }
+             
+        #videoContainer {
+          margin: 0px auto;
+          width: 550px;
+          height: 450px;
+          border: 10px #aeadaf solid;
+        }
+        #videoElement {
+          width: 550px;
+          height: 450px;
+          background-color: rgb(189, 185, 185);
+        }        
+    </style>
+    <!-- configuration for the Alert plugin -->
+    <meta name="mphtools-feature" content="compatibilityUI, cameraPrivacyPopup, compatibilityAutoCheck">
+</head>
+<body>
+    <h1 style="text-align:left; font-family: segoe ui;"> Nhận diện cảm xúc </h1>
+<!-- include automatic alerts about browser and App compatibility -->
+<script src="https://sdk.morphcast.com/mphtools/v1.0/mphtools.js"></script>
+<!-- include MorphCast SDK -->
+<script src="https://ai-sdk.morphcast.com/v1.14/ai-sdk.js"></script>
+<!-- include radar chart -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<!-- elements of the page -->
+<!--<div><b>Results</b></div> -->
+<div class="container">  
+  <div id="age" style="font-family: segoe ui;">Độ tuổi tương tự: -</div>
+  <div id="gender" style="font-family: segoe ui;">Giới tính: -</div>
+  <div id="emotion" style="font-family: segoe ui;">Cảm xúc: -</div>
+  <span style="font-family: segoe ui;">Biểu đồ xúc cảm:</span>
+  <div id="chart"></div>
+
+  <span style="font-family: segoe ui;">Mức độ chú ý:</span>
+  <div id="myProgress">
+      <div id="myBar"></div>
+  </div>
+</div>
+
+<div class="container">  
+  <div id="videoContainer">
+    <video autoplay="true" id="videoElement">
+    
+    </video>
+    <div style="padding: 2em;
+    text-align: center;
+    text-decoration: none !important;
+    margin: 0 auto;">
+      <a style="padding: 10px 16px; font-size: 18px; line-height: 1.3333333; border-radius: 6px; color: #fff; background-color: #337ab7; border-color: #2e6da4;" 
+      href="./test.html"> Nhấn để lưu & tiếp tục kiểm tra - Khảo sát tâm lý</a>
+    </div>
+  </div> 
+</div>
+
+<div id="start_over">
+  <span style="font-family: segoe ui;">Nhấn để bắt đầu</span>
+</div>
+
+<script>
+  // Complete code documentation of MorphCast AI SDK, here:
+  // https://ai-sdk.morphcast.com/latest/index.html
+
+  const initSDK = new Promise((res) => {
+    res(CY.loader()
+    .licenseKey("2e467fe50360882b6ae902909a464b55dc1e2e6a5e1e")
+      .addModule(CY.modules().FACE_AGE.name)
+      .addModule(CY.modules().FACE_GENDER.name)
+      .addModule(CY.modules().FACE_EMOTION.name)
+      .addModule(CY.modules().FACE_ATTENTION.name)
+      .load());
+  });
+    
+  /*
+  Event listeners for MorphCast SDK output
+   */
+    
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + '/' + dd + '/' + yyyy;
+  
+    
+  window.addEventListener(CY.modules().FACE_AGE.eventName, (evt) => {
+    age_div.innerHTML = 'Likely Age: ' + evt.detail.output.numericAge + ' years';
+    console.log('Age:', evt.detail.output.numericAge);
+  });
+
+  window.addEventListener(CY.modules().FACE_GENDER.eventName, (evt) => {
+    gen_div.innerHTML = 'Likely Gender: ' + evt.detail.output.mostConfident;
+    console.log('Gender:', evt.detail.output.mostConfident);
+  });
+
+
+  window.addEventListener(CY.modules().FACE_EMOTION.eventName, (evt) => {
+    emo_div.innerHTML = 'Dominant Emotion: ' + evt.detail.output.dominantEmotion;
+    var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    console.log('Date:', today)
+    console.log('Hour:', myDate)
+    console.log('Dominant Emotion:', evt.detail.output.dominantEmotion);
+    // data for the histogram
+    const emotions = evt.detail.output.emotion;
+    const labels = [];
+    const data = [];
+    console.log('Angry:',evt.detail.output.emotion.Angry);
+    console.log('Disgust:',evt.detail.output.emotion.Disgust);
+    console.log('Fear:',evt.detail.output.emotion.Fear);
+    console.log('Happy:',evt.detail.output.emotion.Happy);
+    console.log('Neutral:',evt.detail.output.emotion.Neutral);
+    console.log('Sad:',evt.detail.output.emotion.Sad);
+    console.log('Surprise:',evt.detail.output.emotion.Surprise);
+       
+    Object.keys(emotions).forEach(k => {
+      labels.push(k);
+      data.push(parseInt((emotions[k] * 100).toFixed(0)));  
+    });  
+   
+    chart.updateOptions({
+      labels: labels,
+      series:[{
+        name: 'Emotion',
+        data: data
+      }]
+    });
+  });
+
+  window.addEventListener(CY.modules().FACE_ATTENTION.eventName, (evt) => {
+    const attention = evt.detail.output.attention;
+    console.log('Attention:',  evt.detail.output.attention);
+    console.log(';');
+    const elem = document.getElementById("myBar");
+    elem.style.width = attention * 100 + "%";
+  });
+
+  var video = document.querySelector("#videoElement");
+
+  if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+          video.srcObject = stream;
+        })
+        .catch(function (err0r) {
+          console.log("Something went wrong!");
+        });
+    };
+
+  /*
+  Elements of the page
+   */
+
+  const startButton = document.querySelector("#start_over");
+
+  startButton.onclick = () => {
+    startButton.style.display = "none";
+    initSDK.then(({start}) => start());
+  };
+
+  const age_div = document.querySelector("#age");
+  const gen_div = document.querySelector("#gender");
+  const emo_div = document.querySelector("#emotion");
+
+  const options = {
+    chart: {
+      height: 350,
+      width: 500,
+      type: 'bar'
+    },
+    colors: ['#7C0098'],
+    yaxis: {
+      min:0,
+      max:100
+    },
+    series:[],
+    title: {
+      text: ''
+    },
+    labels:[]
+  };
+  const chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
+
+</script>
+</body>
+</html>
